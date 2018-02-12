@@ -129,6 +129,18 @@ public class RouteBuilderTest {
         routeBuilder.plan(input);
     }
 
+    @Test(expected = CircuitInRouteException.class)
+    public void testCircuit_3_ShouldFail() throws CircuitInRouteException {
+        //Given
+        List<PlaceAndCheaperPlace> input = Arrays.asList(
+                new PlaceAndCheaperPlace("x", "y"),
+                new PlaceAndCheaperPlace("y", "x")
+        );
+
+        //When
+        routeBuilder.plan(input);
+    }
+
     private void assertPlan(String plan, List<PlaceAndCheaperPlace> input) {
         for (PlaceAndCheaperPlace placeAndCheaperPlace : input) {
             Character placeName = placeAndCheaperPlace.getPlaceName().charAt(0);
