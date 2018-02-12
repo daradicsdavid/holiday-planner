@@ -1,6 +1,7 @@
 package planner;
 
 import planner.exceptions.CircuitInRouteException;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -19,47 +20,29 @@ public class RouteBuilder {
             String placeName = place.getPlaceName();
             String dependentPlaceName = place.getDependentPlaceName();
 
-            if (placeName != null && dependentPlaceName == null) {
-                TreeNode placeNode = findPlaceInTree(root, placeName);
-                if (placeNode == null) {
-                    placeNode = new TreeNode(placeName);
-                    placeNode.setParent(root);
-                }
+            TreeNode placeNode = findPlaceInTree(root, placeName);
+            TreeNode dependentPlaceNode = findPlaceInTree(root, dependentPlaceName);
+
+
+            if (placeNode == null) {
+                placeNode = new TreeNode(placeName, dependentPlaceNode == null ? root : dependentPlaceNode);
             }
 
-            if (placeName != null && dependentPlaceName != null) {
-                TreeNode placeNode = findPlaceInTree(root, placeName);
-                TreeNode dependentPlaceNode = findPlaceInTree(root, dependentPlaceName);
-
-                if (placeNode == null && dependentPlaceNode == null) {
-                    dependentPlaceNode = new TreeNode(dependentPlaceName);
-                    dependentPlaceNode.setParent(root);
-
-                    placeNode = new TreeNode(placeName);
-                    placeNode.setParent(dependentPlaceNode);
-                } else if (placeNode != null && dependentPlaceNode == null) {
-                    TreeNode placeNodeParent = placeNode.getParent();
-                    dependentPlaceNode = new TreeNode(dependentPlaceName);
-                    dependentPlaceNode.setParent(placeNodeParent);
-
-                    placeNode.setParent(dependentPlaceNode);
-                } else if (placeNode == null && dependentPlaceNode != null) {
-                    placeNode = new TreeNode(placeName);
-
-                    placeNode.setParent(dependentPlaceNode);
-                } else if (placeNode != null && dependentPlaceNode != null) {
-                    int placeNodeLevel = placeNode.getLevel();
-                    int dependentPlaceNodeLevel = dependentPlaceNode.getLevel();
-                    if (placeNodeLevel < dependentPlaceNodeLevel) {
-                        throw new CircuitInRouteException();
-                    } else if (placeNodeLevel == dependentPlaceNodeLevel) {
-                        placeNode.setParent(dependentPlaceNode);
-                    }
+            if (dependentPlaceName != null) {
+                if (dependentPlaceNode == null) {
+                    dependentPlaceNode = new TreeNode(dependentPlaceName, placeNode.getParent());
                 }
+                int placeNodeLevel = placeNode.getLevel();
+                int dependentPlaceNodeLevel = dependentPlaceNode.getLevel();
+                if (placeNodeLevel < dependentPlaceNodeLevel) {
+                    throw new CircuitInRouteException();
+                }
+
+                placeNode.setParent(dependentPlaceNode);
             }
+
 
         }
-
         return getRoute();
     }
 

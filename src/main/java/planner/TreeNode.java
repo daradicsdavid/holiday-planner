@@ -10,9 +10,10 @@ public class TreeNode {
     private TreeNode parent;
     private final List<TreeNode> children;
 
-    TreeNode(String place) {
+    TreeNode(String place, TreeNode parent) {
         this.place = place;
         children = new ArrayList<>();
+        setParent(parent);
     }
 
     TreeNode() {
