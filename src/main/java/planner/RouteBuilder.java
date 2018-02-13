@@ -17,24 +17,27 @@ public class RouteBuilder {
         root = new TreeNode(null);
 
         for (PlaceAndCheaperPlace place : places) {
+            // place => dependentPlace ( x => y )
             String placeName = place.getPlaceName();
             String dependentPlaceName = place.getDependentPlaceName();
 
             TreeNode placeNode = findPlaceInTree(root, placeName);
             TreeNode dependentPlaceNode = findPlaceInTree(root, dependentPlaceName);
 
+            checkForCircuit(placeNode, dependentPlaceNode);
 
+            //If placeNode does not exist in the tree yet, create it directly under the root of the tree.
             if (placeNode == null) {
-                placeNode = new TreeNode(placeName, dependentPlaceNode == null ? root : dependentPlaceNode);
+                placeNode = new TreeNode(placeName, root);
             }
 
-            if (dependentPlaceName != null) {
-                if (dependentPlaceNode == null) {
-                    dependentPlaceNode = new TreeNode(dependentPlaceName, root);
-                }
+            //If dependentPlaceNode does not exist in the tree yet, create it directly under the root of the tree.
+            if (dependentPlaceName != null && dependentPlaceNode == null) {
+                dependentPlaceNode = new TreeNode(dependentPlaceName, root);
+            }
 
-                checkForCircuit(placeNode, dependentPlaceNode);
-
+            //If dependentPlaceNode exist, add the placeNode to it's children.
+            if (dependentPlaceNode != null) {
                 placeNode.setParent(dependentPlaceNode);
             }
 
@@ -43,7 +46,16 @@ public class RouteBuilder {
         return getRoute();
     }
 
+    /* (placeNode => dependentPlaceNode)
+    If both nodes exists in the tree and placeNode is on a higher level than dependentPlaceNode
+    then setting dependentPlaceNode as the parent node of placeNode would violate other rules.
+
+    For example x => y , y => z , z => x, after the first two rules the plan is: zyx, placing x before z would violate other rules.
+    */
     private void checkForCircuit(TreeNode placeNode, TreeNode dependentPlaceNode) throws CircuitInRouteException {
+        if (placeNode == null || dependentPlaceNode == null) {
+            return;
+        }
         int placeNodeLevel = placeNode.getLevel();
         int dependentPlaceNodeLevel = dependentPlaceNode.getLevel();
         if (placeNodeLevel < dependentPlaceNodeLevel) {
