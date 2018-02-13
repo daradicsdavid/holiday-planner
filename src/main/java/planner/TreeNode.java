@@ -21,10 +21,6 @@ public class TreeNode {
         children = new ArrayList<>();
     }
 
-    public TreeNode getParent() {
-        return parent;
-    }
-
     public List<TreeNode> getChildren() {
         return children;
     }

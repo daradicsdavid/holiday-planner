@@ -20,7 +20,7 @@ public class InputParserTest {
         List<String> input = Collections.singletonList("x =>");
 
         //When
-        List<PlaceAndCheaperPlace> placeAndCheaperPlaces = inputParser.parseInput(input);
+        List<PlaceAndCheaperPlace> placeAndCheaperPlaces = inputParser.parseInput(input.stream());
 
         //Then
         assertEquals(1, placeAndCheaperPlaces.size());
@@ -34,7 +34,7 @@ public class InputParserTest {
         List<String> input = Collections.singletonList("x => y");
 
         //When
-        List<PlaceAndCheaperPlace> placeAndCheaperPlaces = inputParser.parseInput(input);
+        List<PlaceAndCheaperPlace> placeAndCheaperPlaces = inputParser.parseInput(input.stream());
 
         //Then
         assertEquals(1, placeAndCheaperPlaces.size());
@@ -48,7 +48,7 @@ public class InputParserTest {
         List<String> input = Arrays.asList("x => y","y =>");
 
         //When
-        List<PlaceAndCheaperPlace> placeAndCheaperPlaces = inputParser.parseInput(input);
+        List<PlaceAndCheaperPlace> placeAndCheaperPlaces = inputParser.parseInput(input.stream());
 
         //Then
         assertEquals(2, placeAndCheaperPlaces.size());
@@ -64,7 +64,7 @@ public class InputParserTest {
         List<String> input = Collections.singletonList("");
 
         //When
-        inputParser.parseInput(input);
+        inputParser.parseInput(input.stream());
 
     }
 
@@ -74,7 +74,7 @@ public class InputParserTest {
         List<String> input = Collections.singletonList("=> y");
 
         //When
-        inputParser.parseInput(input);
+        inputParser.parseInput(input.stream());
 
     }
 
@@ -84,7 +84,7 @@ public class InputParserTest {
         List<String> input = Collections.singletonList("x => ");
 
         //When
-        inputParser.parseInput(input);
+        inputParser.parseInput(input.stream());
 
     }
 
@@ -94,7 +94,7 @@ public class InputParserTest {
         List<String> input = Arrays.asList("x =>","x => y");
 
         //When
-        inputParser.parseInput(input);
+        inputParser.parseInput(input.stream());
 
     }
 }

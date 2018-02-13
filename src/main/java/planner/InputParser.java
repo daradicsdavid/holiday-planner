@@ -4,8 +4,10 @@ import planner.exceptions.DuplicatePlaceException;
 import planner.exceptions.InvalidInputLineException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class InputParser {
 
@@ -15,9 +17,11 @@ public class InputParser {
     private List<PlaceAndCheaperPlace> parsedPlaces;
 
 
-    public List<PlaceAndCheaperPlace> parseInput(List<String> input) throws InvalidInputLineException, DuplicatePlaceException {
+    public List<PlaceAndCheaperPlace> parseInput(Stream<String> input) throws InvalidInputLineException, DuplicatePlaceException {
         parsedPlaces = new ArrayList<>();
-        for (String inputLine : input) {
+
+        for (Iterator<String> it = input.iterator(); it.hasNext(); ) {
+            String inputLine = it.next();
             validateLine(inputLine);
             parsedPlaces.add(parseLine(inputLine));
         }
