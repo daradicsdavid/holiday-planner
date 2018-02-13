@@ -16,8 +16,8 @@ public class TreeNode {
         setParent(parent);
     }
 
-    TreeNode() {
-        place = null;
+    TreeNode(String place) {
+        this.place = place;
         children = new ArrayList<>();
     }
 
@@ -44,7 +44,7 @@ public class TreeNode {
     }
 
     private boolean isRoot() {
-        return parent == null;
+        return place == null && parent == null;
     }
 
     public int getLevel() {

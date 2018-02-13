@@ -14,7 +14,7 @@ public class RouteBuilder {
     private StringBuilder stringBuilder;
 
     public String plan(List<PlaceAndCheaperPlace> places) throws CircuitInRouteException {
-        root = new TreeNode();
+        root = new TreeNode(null);
 
         for (PlaceAndCheaperPlace place : places) {
             String placeName = place.getPlaceName();
@@ -30,13 +30,10 @@ public class RouteBuilder {
 
             if (dependentPlaceName != null) {
                 if (dependentPlaceNode == null) {
-                    dependentPlaceNode = new TreeNode(dependentPlaceName, placeNode.getParent());
+                    dependentPlaceNode = new TreeNode(dependentPlaceName, root);
                 }
-                int placeNodeLevel = placeNode.getLevel();
-                int dependentPlaceNodeLevel = dependentPlaceNode.getLevel();
-                if (placeNodeLevel < dependentPlaceNodeLevel) {
-                    throw new CircuitInRouteException();
-                }
+
+                checkForCircuit(placeNode, dependentPlaceNode);
 
                 placeNode.setParent(dependentPlaceNode);
             }
@@ -44,6 +41,14 @@ public class RouteBuilder {
 
         }
         return getRoute();
+    }
+
+    private void checkForCircuit(TreeNode placeNode, TreeNode dependentPlaceNode) throws CircuitInRouteException {
+        int placeNodeLevel = placeNode.getLevel();
+        int dependentPlaceNodeLevel = dependentPlaceNode.getLevel();
+        if (placeNodeLevel < dependentPlaceNodeLevel) {
+            throw new CircuitInRouteException();
+        }
     }
 
 
