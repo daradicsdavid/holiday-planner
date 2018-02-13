@@ -1,2 +1,7 @@
-# holiday-planner
-Holiday planner
+# Holiday planner
+
+## Running the tests
+
+```
+mvn test
+```

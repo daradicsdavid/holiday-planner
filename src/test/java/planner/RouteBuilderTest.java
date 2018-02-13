@@ -59,7 +59,6 @@ public class RouteBuilderTest {
         String plan = routeBuilder.plan(input);
 
         //Then
-        System.out.println(plan);
         assertPlan(plan, input);
     }
 
@@ -76,7 +75,6 @@ public class RouteBuilderTest {
         String plan = routeBuilder.plan(input);
 
         //Then
-        System.out.println(plan);
         assertPlan(plan, input);
     }
 
@@ -96,7 +94,6 @@ public class RouteBuilderTest {
         String plan = routeBuilder.plan(input);
 
         //Then
-        System.out.println(plan);
         assertPlan(plan, input);
     }
 
